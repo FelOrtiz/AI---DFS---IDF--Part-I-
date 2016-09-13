@@ -37,7 +37,7 @@ public class Board {
 
     /// Constants to make the code understandable
 
-    static final int BOARDSIZE=16;	/// The size of the board
+    static final int BOARDSIZE=8;	/// The size of the board
 
     static final int EMPTY=0;	/// An empty square
 
@@ -128,13 +128,13 @@ public class Board {
                     }
                     s+=endl;
             }
-            if (turn==TURNBLACK) s+="N"+endl; else s+="B"+endl;
+            /*if (turn==TURNBLACK) s+="N"+endl; else s+="B"+endl;
             s+="MovsHastaEmpate "+movestodraw+endl;
             if (getShortCastle(TURNBLACK)) s+="EnroqueC_N"+endl;
             if (getLongCastle(TURNBLACK)) s+="EnroqueL_N"+endl;
             if (getShortCastle(TURNWHITE)) s+="EnroqueC_B"+endl;
             if (getLongCastle(TURNWHITE)) s+="EnroqueL_B"+endl;
-            if (enpassent!=null) s+="AlPaso "+enpassent+endl;
+            if (enpassent!=null) s+="AlPaso "+enpassent+endl;*/
             return s;
     }
 
