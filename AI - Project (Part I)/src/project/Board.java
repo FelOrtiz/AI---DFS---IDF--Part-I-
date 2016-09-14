@@ -128,6 +128,7 @@ public class Board {
                     }
                     s+=endl;
             }
+            s+="MovsHastaEmpate "+movestodraw+endl;
             /*if (turn==TURNBLACK) s+="N"+endl; else s+="B"+endl;
             s+="MovsHastaEmpate "+movestodraw+endl;
             if (getShortCastle(TURNBLACK)) s+="EnroqueC_N"+endl;
@@ -1055,7 +1056,7 @@ public class Board {
             //if it is a pawn, then reset the moves to draw number		
             if (src!=null && isPawn(src)) 
             {
-                    movestodraw=100;
+                    //movestodraw=100;
 
                     //check to see if an enpassent move is available, if so, mark it
 
@@ -1094,7 +1095,7 @@ public class Board {
             if (capture!=null) 
             {
                     removePiece(capture);
-                    movestodraw=100;
+                    //movestodraw=100;
             }
 
 

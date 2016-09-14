@@ -15,15 +15,18 @@ import java.io.IOException;
  *
  * @author HoLeX
  */
-public class Main
+public class Ajedrez
 {
-
+    static int deep=100;
+    long tInicio, tFin;
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
         // TODO code application logic here
+        Ajedrez ajedrez = new Ajedrez();
         Board b = new Board();
         int[][] board = new int[8][8];
         BufferedReader input;
@@ -45,26 +48,41 @@ public class Main
         } catch (FileNotFoundException ex) {
             System.out.println("No se encuentra el tablero que se intenta cargar");
         }
-        
-        
-        dfs(b, 0);        
+        ajedrez.tInicio = System.currentTimeMillis();
+        ajedrez.dfs(b, 0);        
     }
     
-    public static int dfs(Board b, int distancia)
+    public int dfs(Board b, int distance)
     {
+                    
+        //System.out.println("Minumum "+Ajedrez.deep);
+
+        if(distance>Ajedrez.deep)return -1;
+        
         if (b.isStalemate())
         {
-            System.out.println("Stalemate");
+            //System.out.println("Stalemate");
             return 0;
         }
         else if(b.isCheckMate())
         {
-            if( b.turn == -1 )
+            /*
+            Encontramos el jaque mate que hace ganar al jugador de piezas blancas,
+            nos quedamos con el primer jaque mate encontrado a esa profundidad, ya que,
+            es el que nos lleva menor tiempo a encontrarlo
+            */
+            if( b.turn == -1 && distance<Ajedrez.deep)
             {
                 System.out.println("|---------CheckMate-----------|");
                 System.out.println("|---------Gano El Jugador-----------|");
                 System.out.println(b.toString());
-                System.out.println("|-------Profundidad------|\n"+distancia);
+                System.out.println("|-------Profundidad------|");
+                System.out.println(distance);
+                System.out.println("");
+                Ajedrez.deep = distance;
+                tFin = System.currentTimeMillis();
+                long tiempo = tFin - tInicio;
+                System.out.println("Tiempo: "+tiempo);
                 return 1;
             }
             return 2;
@@ -72,12 +90,14 @@ public class Main
         else
         {
             Move[] moves = b.getValidMoves();
+            int newDistance = distance+1;
+            //System.out.println("Move para empate: "+b.movestodraw);
+            //System.out.println("Moves : "+moves.length);
             for(Move m : moves)
             {
-                Board newBoard = b.clone();
-                newBoard.makeMove(m);
-                dfs(newBoard, distancia++);
-                
+                    Board newBoard = b.clone();
+                    newBoard.makeMove(m);
+                    dfs(newBoard, newDistance);
             }
             return -1;
         }
