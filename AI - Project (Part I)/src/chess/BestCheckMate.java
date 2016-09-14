@@ -50,7 +50,7 @@ public class BestCheckMate
                     s+=endl;
             }
             s+="Deep: "+deep+endl;
-            s+="Time total: "+time+endl;
+            s+="Time Found CheckMate: "+time+" MiliSegundos";
             return s;
     }
 

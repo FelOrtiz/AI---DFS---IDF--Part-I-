@@ -24,6 +24,7 @@ public class Chess
     static final int BOARDSIZE=8;	/// The size of the board
     static final String BOARDFILENAME="problem2.tbl";	/// The size of the board
     static int deep=Integer.MAX_VALUE;
+    static int totalNodesExpanded=0;
     long timeBegin, timeEnd;
     ArrayList<BestCheckMate> bestCheckMateDFS;
     public Chess()
@@ -62,17 +63,46 @@ public class Chess
         } catch (FileNotFoundException ex) {
             System.out.println("No se encuentra el tablero que se intenta cargar");
         }
+        long timeEndEjecution;
+        
         //Algorithm DFS
         chess.timeBegin = System.currentTimeMillis();
         chess.dfs(b, 0);  
-        chess.showBestCheckMate();
+        timeEndEjecution = System.currentTimeMillis();
+        if(chess.bestCheckMateDFS.size()>0)
+        {
+            System.out.println("----------DFS----------");
+            chess.showBestCheckMate();
+            System.out.println("Total Nodes Expanded: "+Chess.totalNodesExpanded);
+            System.out.println("Total Time Ejecution: "+(timeEndEjecution-chess.timeBegin)+" MiliSegundos\n");
+        }
+        else
+        {
+            System.out.println("----------DFS----------");
+            System.out.println("------NO Found CheckMate----------");
+            System.out.println("Total Nodes Expanded: "+Chess.totalNodesExpanded);
+            System.out.println("Total Time Ejecution: "+(timeEndEjecution-chess.timeBegin)+" MiliSegundos\n");
+        }
         
+
         //Algorithm IDS
+        chess.totalNodesExpanded = 0;
         chess.timeBegin = System.currentTimeMillis();
         BestCheckMate bestCheckMate= chess.ids(b);
+        timeEndEjecution = System.currentTimeMillis();
         if(bestCheckMate!=null)
         {
+            System.out.println("----------IDS----------");
             System.out.println( bestCheckMate.toString() );
+            System.out.println("Total Nodes Expanded: "+Chess.totalNodesExpanded);
+            System.out.println("Total Time Ejecution: "+(timeEndEjecution-chess.timeBegin)+" MiliSegundos\n");
+        }
+        else
+        {
+            System.out.println("----------IDS----------");
+            System.out.println("------NO Found CheckMate----------");
+            System.out.println("Total Nodes Expanded: "+Chess.totalNodesExpanded);
+            System.out.println("Total Time Ejecution: "+(timeEndEjecution-chess.timeBegin)+" MiliSegundos\n");
         }
            
     }
@@ -129,6 +159,7 @@ public class Chess
             int newDistance = distance+1;
             for(Move m : moves)
             {
+                    totalNodesExpanded++;
                     Board newBoard = b.clone();
                     newBoard.makeMove(m);
                     dfs(newBoard, newDistance);
@@ -187,6 +218,7 @@ public class Chess
             BestCheckMate bestCheckMate=null;
             for(Move m : moves)
             {
+                    totalNodesExpanded++;
                     Board newBoard = b.clone();
                     newBoard.makeMove(m);
                     bestCheckMate = dls(newBoard, LimitDeep, newDistance);
