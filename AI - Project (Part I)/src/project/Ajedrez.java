@@ -50,7 +50,8 @@ public class Ajedrez
             System.out.println("No se encuentra el tablero que se intenta cargar");
         }
         ajedrez.tInicio = System.currentTimeMillis();
-        ajedrez.dfs(b, 0);        
+        //ajedrez.dfs(b, 0);   
+        ajedrez.ids(b);
     }
     
     public int dfs(Board b, int distance)
@@ -103,4 +104,76 @@ public class Ajedrez
             return -1;
         }
     }
+    
+    public Board ids(Board b)
+    {
+        Board found;
+        for(int i=0;i<Integer.MAX_VALUE;i++)
+        {
+            found = dls(b, i, 0);
+            if(found != null)
+            {
+                return b;
+            }
+        
+        }
+        return null;
+    }
+    
+    public Board dls(Board b, int deep, int distance)
+    {
+        //System.out.println("Minumum "+Ajedrez.deep);
+
+        if(distance>deep)return null;
+        
+        if (b.isStalemate())
+        {
+            //System.out.println("Stalemate");
+            return null;
+        }
+        else if(b.isCheckMate())
+        {
+            /*
+            Encontramos el jaque mate que hace ganar al jugador de piezas blancas,
+            nos quedamos con el primer jaque mate encontrado a esa profundidad, ya que,
+            es el que nos lleva menor tiempo a encontrarlo
+            */
+            if( b.turn == -1 && distance<deep)
+            {
+                System.out.println("|---------CheckMate-----------|");
+                System.out.println("|---------Gano El Jugador-----------|");
+                System.out.println(b.toString());
+                System.out.println("|-------Profundidad------|");
+                System.out.println(distance);
+                System.out.println("");
+                Ajedrez.deep = distance;
+                tFin = System.currentTimeMillis();
+                long tiempo = tFin - tInicio;
+                System.out.println("Tiempo: "+tiempo);
+                return b;
+            }
+            return null;
+        }
+        else
+        {
+            Move[] moves = b.getValidMoves();
+            int newDistance = distance+1;
+            //System.out.println("Move para empate: "+b.movestodraw);
+            //System.out.println("Moves : "+moves.length);
+            Board boardFound = null;
+            for(Move m : moves)
+            {
+                    Board newBoard = b.clone();
+                    newBoard.makeMove(m);
+                    boardFound = dls(newBoard, deep, newDistance);
+                    if(boardFound!=null)
+                    {
+                        return boardFound;
+                    }
+            }
+            return boardFound;
+        }
+    }
+    
+    
 }
