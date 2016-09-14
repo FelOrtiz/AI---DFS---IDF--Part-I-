@@ -66,7 +66,7 @@ public class Board {
 
     /**	Constructor with default values
     **/
-    Board() {
+    public Board() {
             b=new int[BOARDSIZE][BOARDSIZE];
             int[][] board={{-4,-2,-3,-5,-6,-3,-2,-4},
                              {-1,-1,-1,-1,-1,-1,-1,-1},
